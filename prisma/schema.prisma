@@ -8,94 +8,105 @@ datasource db {
 }
 
 model Utilizador {
-  id              Int               @id @default(autoincrement())
-  nome            String            @db.VarChar(255)
-  genero          Genero            @relation(fields: [generoId], references: [id])
-  dataNascimento  DateTime
-  telefone        Telefone          @relation(fields: [telefoneId], references: [id])
-  email           String?           @db.VarChar(255)
-  palavra_passe   String            @db.VarChar(255)
-  dataCadastro    DateTime          @default(now())
-  grupoUtilizador GrupoUtilizadores @relation(fields: [grupoUtilizadorId], references: [id])
-
-  generoId          Int        @unique
-  telefoneId        Int        @unique
-  grupoUtilizadorId Int        @unique
-  Documento         Documento?
-  Perfil            Perfil?
+  id                  String                @id @db.VarChar(36)
+  nome                String                @db.VarChar(255)
+  email               String                @unique @db.VarChar(255)
+  palavra_passe       String                @db.VarChar(255)
+  dataCadastro        DateTime              @default(now())
+  grupo               GrupoUtilizadores     @relation(fields: [grupoUtilizadoresId], references: [id])
+  grupoUtilizadoresId String
+  Perfil              Perfil?
+  Documento           UtilizadorDocumento[]
 }
 
 model Perfil {
-  id           Int        @id @default(autoincrement())
-  bio          String?    @db.VarChar(255)
+  id           String     @id @db.VarChar(36)
+  image_url    String     @default("/") @db.VarChar(255)
+  bio          String?    @db.Text
+  genero       Genero     @relation(fields: [generoId], references: [id])
+  generoId     String
   utilizador   Utilizador @relation(fields: [utilizadorId], references: [id])
-  utilizadorId Int        @unique
+  utilizadorId String     @unique
+  telefone     Telefone?
 }
 
 model GrupoUtilizadores {
-  id         Int         @id @default(autoincrement())
-  nome       String      @db.VarChar(255)
-  descricao  String      @db.VarChar(255)
-  Utilizador Utilizador?
-  Permissoes Permissoes?
+  id         String       @id @db.VarChar(36)
+  nome       String       @unique @db.VarChar(255)
+  descricao  String       @db.Text
+  Utilizador Utilizador[]
+  Permissoes Permissoes[]
 }
 
 model Permissoes {
-  id      Int               @id @default(autoincrement())
-  grupo   GrupoUtilizadores @relation(fields: [grupoUtilizadoresId], references: [id])
-  nivel   String            @db.VarChar(255)
-  recurso String            @db.VarChar(255)
+  id                  String            @id @db.VarChar(36)
+  nivel               String            @db.VarChar(255)
+  recurso             String            @db.VarChar(255)
+  grupo               GrupoUtilizadores @relation(fields: [grupoUtilizadoresId], references: [id])
+  grupoUtilizadoresId String
+}
 
-  grupoUtilizadoresId Int @unique
+model Categoria {
+  id         String      @id @db.VarChar(36)
+  nome       String      @unique @db.VarChar(255)
+  documentos Documento[]
 }
 
 model Documento {
-  id               Int          @id @default(autoincrement())
-  titulo           String       @db.VarChar(255)
-  conteudo         String       @db.VarChar(255)
-  Categoria        String       @db.VarChar(255)
-  utilizador       Utilizador   @relation(fields: [utilizadorId], references: [id])
-  dataCriacao      DateTime     @default(now())
-  dataActualizacao DateTime     @updatedAt
-  departamento     Departamento @relation(fields: [departamentoId], references: [id])
-  status           Status       @relation(fields: [statusId], references: [id])
+  id               String    @id @db.VarChar(36)
+  titulo           String    @unique @db.VarChar(255)
+  conteudo         String    @db.Text
+  Categoria        Categoria @relation(fields: [categoriaId], references: [id])
+  categoriaId      String
+  Estado           Estado    @relation(fields: [estadoId], references: [id])
+  estadoId         String    @default("Pendente")
+  image_url        String    @default("/") @db.VarChar(255)
+  dataCriacao      DateTime  @default(now())
+  dataActualizacao DateTime  @updatedAt
 
-  utilizadorId   Int        @unique
-  departamentoId Int        @unique
-  statusId       Int        @unique
-  Auditoria      Auditoria?
+  departamento Departamento[]
+  Auditoria    Auditoria[]
+  Utilizador   UtilizadorDocumento[]
 }
 
 model Telefone {
-  id             Int         @id @default(autoincrement())
-  numeroTelefone String      @db.VarChar(255)
-  Utilizador     Utilizador?
+  id             String @id @db.VarChar(36)
+  numeroTelefone String @unique @db.VarChar(255)
+  Perfil         Perfil @relation(fields: [PerfilId], references: [id])
+  PerfilId       String @unique
 }
 
-model Status {
-  id        Int        @id @default(autoincrement())
-  descricao String     @db.VarChar(255)
-  Documento Documento?
+model Estado {
+  id        String      @id @db.VarChar(36)
+  descricao String      @db.VarChar(255)
+  Documento Documento[]
 }
 
 model Genero {
-  id          Int         @id @default(autoincrement())
-  denominacao String      @db.VarChar(255)
-  Utilizador  Utilizador?
+  id          String   @id @db.VarChar(36)
+  denominacao String   @unique @db.VarChar(255)
+  Perfil      Perfil[]
 }
 
 model Departamento {
-  id        Int        @id @default(autoincrement())
-  nome      String     @db.VarChar(255)
-  descricao String     @db.VarChar(255)
-  Documento Documento?
+  id        String      @id @db.VarChar(36)
+  nome      String      @unique @db.VarChar(255)
+  descricao String      @db.Text
+  Documento Documento[]
 }
 
 model Auditoria {
-  id        Int       @id @default(autoincrement())
-  documento Documento @relation(fields: [documentoId], references: [id])
-  alteracao String    @db.VarChar(255)
-  data      DateTime  @default(now())
+  id        String      @id @db.VarChar(36)
+  alteracao String      @db.Text
+  data      DateTime    @default(now())
+  Documento Documento[]
+}
 
-  documentoId Int @unique
+model UtilizadorDocumento {
+  id             String     @id @db.VarChar(36)
+  dataAtribuicao DateTime   @default(now())
+  utilizador     Utilizador @relation(fields: [utilizadorId], references: [id])
+  utilizadorId   String
+  documento      Documento  @relation(fields: [documentoId], references: [id])
+  documentoId    String
 }

@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+//import dashboardImage from './public/assets/img/DashboardImage.png'
 
 const config: Config = {
   content: [
@@ -11,8 +12,11 @@ const config: Config = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'sisgdoc-backgroundImage': "url('/assets/img/LoginImagem.png')",
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
+      },
+      colors: {
+        'blue-sisgdoc': '#0583F2',
+        'blue-logo': '#287EFD',
       },
     },
   },
