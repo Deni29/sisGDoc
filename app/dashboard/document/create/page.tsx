@@ -11,7 +11,7 @@ export default async function Page() {
                 breadcrumbs={[
                     { label: 'Documentos', href: '/dashboard/document' },
                     {
-                        label: 'Create Document',
+                        label: 'Criar Documento',
                         href: '/dashboard/document/create',
                         active: true,
                     },
