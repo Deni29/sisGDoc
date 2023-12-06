@@ -1,9 +1,9 @@
 import Form from '@/app/ui/invoices/create-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
-import { fetchCustomers } from '@/app/lib/data';
+import { fetchCategory } from '@/app/lib/data';
 
 export default async function Page() {
-    const utilizador = await fetchCustomers();
+    const categoria = await fetchCategory();
 
     return (
         <main>
@@ -17,7 +17,7 @@ export default async function Page() {
                     },
                 ]}
             />
-            <Form customers={utilizador} />
+            <Form categories={categoria} />
         </main>
     );
 }

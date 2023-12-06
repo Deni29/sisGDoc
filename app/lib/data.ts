@@ -258,17 +258,17 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
-export async function fetchCustomers() {
+export async function fetchCategory() {
   try {
-    const data = await prisma.utilizador.findMany({
+    const data = await prisma.categoria.findMany({
       select: { 
         id: true, 
-        nome: true 
+        nome: true
       }
     });
 
-    const utilizadores = data;
-    return utilizadores;
+    const categories = data;
+    return categories;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all users.');
