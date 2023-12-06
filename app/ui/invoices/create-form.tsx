@@ -11,10 +11,11 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '../button';
+import { createDocument } from '@/app/lib/actions';
 
 export default function Form({ categories }: { categories: { id: string, nome: string }[]}) {
   return (
-    <form>
+    <form action={createDocument}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Category Name */}
         <div className="mb-4">
