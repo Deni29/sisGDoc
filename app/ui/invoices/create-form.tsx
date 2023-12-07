@@ -17,7 +17,7 @@ export default function Form({ categories }: { categories: { id: string, nome: s
   return (
     <form action={createDocument}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Category Name */}
+        {/* Document Category */}
         <div className="mb-4">
           <label htmlFor="document" className="mb-2 block text-sm font-medium">
             Escolha a categoria
