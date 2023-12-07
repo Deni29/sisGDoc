@@ -78,7 +78,7 @@ model Telefone {
 
 model Estado {
   id        String      @id @db.VarChar(36)
-  descricao String      @db.VarChar(255)
+  nome String      @db.VarChar(255)
   Documento Documento[]
 }
 

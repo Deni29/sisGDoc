@@ -113,27 +113,6 @@ export async function fetchFilteredInvoices(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    //   // const invoices = await sql<InvoicesTable>`
-    //   //   SELECT
-    //   //     invoices.id,
-    //   //     invoices.amount,
-    //   //     invoices.date,
-    //   //     invoices.status,
-    //   //     customers.name,
-    //   //     customers.email,
-    //   //     customers.image_url
-    //   //   FROM invoices
-    //   //   JOIN customers ON invoices.customer_id = customers.id
-    //   //   WHERE
-    //   //     customers.name ILIKE ${`%${query}%`} OR
-    //   //     customers.email ILIKE ${`%${query}%`} OR
-    //   //     invoices.amount::text ILIKE ${`%${query}%`} OR
-    //   //     invoices.date::text ILIKE ${`%${query}%`} OR
-    //   //     invoices.status ILIKE ${`%${query}%`}
-    //   //   ORDER BY invoices.date DESC
-    //   //   LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    //   // `;
-
     const data = await prisma.documento.findMany({
       include: {
         Categoria: {
@@ -203,16 +182,6 @@ export async function fetchFilteredInvoices(
 
 export async function fetchInvoicesPages(query: string) {
   try {
-    //   const count = await sql`SELECT COUNT(*)
-    //   FROM invoices
-    //   JOIN customers ON invoices.customer_id = customers.id
-    //   WHERE
-    //     customers.name ILIKE ${`%${query}%`} OR
-    //     customers.email ILIKE ${`%${query}%`} OR
-    //     invoices.amount::text ILIKE ${`%${query}%`} OR
-    //     invoices.date::text ILIKE ${`%${query}%`} OR
-    //     invoices.status ILIKE ${`%${query}%`}
-    // `;
     const count = await prisma.documento.count({
       where: {
         OR: [
@@ -269,6 +238,23 @@ export async function fetchCategory() {
 
     const categories = data;
     return categories;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all users.');
+  }
+}
+
+export async function fetchStatus() {
+  try {
+    const data = await prisma.estado.findMany({
+      select: { 
+        id: true, 
+        nome: true
+      }
+    });
+
+    const status = data;
+    return status;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all users.');

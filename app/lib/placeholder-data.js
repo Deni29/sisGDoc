@@ -43,9 +43,9 @@ const categorias = [
 
 // Dados para a tabela Estado
 const estado = [
-  { id: generateRandomId(), descricao: 'Pendente' },
-  { id: generateRandomId(), descricao: 'Em progresso' },
-  { id: generateRandomId(), descricao: 'Concluído' },
+  { id: generateRandomId(), nome: 'Pendente' },
+  { id: generateRandomId(), nome: 'Em progresso' },
+  { id: generateRandomId(), nome: 'Concluído' },
 ];
 
 // Dados para a tabela Genero
