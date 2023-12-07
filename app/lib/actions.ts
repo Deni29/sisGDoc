@@ -2,7 +2,7 @@
 
 export async function createDocument(formData: FormData) {
     const rawFormData = {
-        documentId: formData.get('documentId'),
+        categoryId: formData.get('categoryId'),
         category: formData.get('category'),
         name: formData.get('name'),
         status: formData.get('status'),
