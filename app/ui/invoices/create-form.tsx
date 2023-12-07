@@ -25,7 +25,7 @@ export default function Form({ categories }: { categories: { id: string, nome: s
           <div className="relative">
             <select
               id="category"
-              name="categoryId"
+              name="category"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               defaultValue=""
             >
@@ -33,7 +33,7 @@ export default function Form({ categories }: { categories: { id: string, nome: s
                 Selecione uma categoria
               </option>
               {categories.map((category) => (
-                <option key={category.id} value={category.id}>
+                <option key={category.id} value={category.nome}>
                   {category.nome}
                 </option>
               ))}
