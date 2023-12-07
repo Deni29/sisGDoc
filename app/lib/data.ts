@@ -88,7 +88,7 @@ export async function fetchCardData() {
     const totalPendingDocuments = Number(await prisma.documento.count({
       where: {
         Estado: {
-          descricao: 'Pendente',
+          nome: 'Pendente',
         }
       }
     }) ?? '0');
@@ -122,7 +122,7 @@ export async function fetchFilteredInvoices(
         },
         Estado: {
           select: {
-            descricao: true
+            nome: true
           }
         },
         Utilizador: {
@@ -146,7 +146,7 @@ export async function fetchFilteredInvoices(
         OR: [
           { titulo: { contains: query } },
           // { dataCriacao: query },
-          { Estado: { descricao: { contains: query } } },
+          { Estado: { nome: { contains: query } } },
           { Categoria: { nome: { contains: query } } },
           { Utilizador: { some: { utilizador: { nome: { contains: query } } } } },
           { Utilizador: { some: { utilizador: { email: { contains: query } } } } },
@@ -163,7 +163,7 @@ export async function fetchFilteredInvoices(
       titulo: titulo,
       dataCriacao: dataCriacao,
       categoria: Categoria.nome,
-      estado: Estado.descricao,
+      estado: Estado.nome,
 
       utilizador: Utilizador.map(({ utilizador }) => ({
         id: utilizador.id,
@@ -187,7 +187,7 @@ export async function fetchInvoicesPages(query: string) {
         OR: [
           { titulo: { contains: query } },
           // { dataCriacao: query },
-          { Estado: { descricao: { contains: query } } },
+          { Estado: { nome: { contains: query } } },
           { Categoria: { nome: { contains: query } } },
           { Utilizador: { some: { utilizador: { nome: { contains: query } } } } },
           { Utilizador: { some: { utilizador: { email: { contains: query } } } } },
@@ -240,7 +240,7 @@ export async function fetchCategory() {
     return categories;
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to fetch all users.');
+    throw new Error('Failed to fetch all categories.');
   }
 }
 
@@ -257,7 +257,7 @@ export async function fetchStatus() {
     return status;
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to fetch all users.');
+    throw new Error('Failed to fetch all status.');
   }
 }
 

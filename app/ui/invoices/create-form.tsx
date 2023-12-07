@@ -1,25 +1,21 @@
 'use client';
 
-import {
-  PrismaClient,
-} from '@prisma/client';
 import Link from 'next/link';
 import {
-  CheckIcon,
-  ClockIcon,
   DocumentIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '../button';
 import { createDocument } from '@/app/lib/actions';
+import InvoiceStatus from '@/app/ui/invoices/status';
 
-export default function Form(
-  { categories }: { 
-    categories: { id: string, nome: string }[]
-  }, 
-  { status }: { 
-    status: { id: string, descricao: string }[]
-  }) {
+export default function Form({
+  categories,
+  status
+}: {
+  categories: { id: string, nome: string }[],
+  status: { id: string, nome: string }[]
+}) {
   return (
     <form action={createDocument}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -74,51 +70,24 @@ export default function Form(
           </label>
           <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
             <div className="flex gap-4">
-              <div className="flex items-center">
-                <input
-                  id="pendente"
-                  name="status"
-                  type="radio"
-                  value="pendente"
-                  className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
-                />
-                <label
-                  htmlFor="pendente"
-                  className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
-                >
-                  Pendente <ClockIcon className="h-4 w-4" />
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="Em progresso"
-                  name="status"
-                  type="radio"
-                  value="Em progresso"
-                  className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
-                />
-                <label
-                  htmlFor="Em progresso"
-                  className="ml-2 flex items-center gap-1.5 rounded-full bg-green-200 px-3 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-500"
-                >
-                  Em progresso <CheckIcon className="h-4 w-4" />
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="Concluído"
-                  name="status"
-                  type="radio"
-                  value="Concluído"
-                  className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
-                />
-                <label
-                  htmlFor="Concluído"
-                  className="ml-2 flex items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white dark:text-gray-300"
-                >
-                  Concluído <CheckIcon className="h-4 w-4" />
-                </label>
-              </div>
+              {status.map((estado) => (
+                <div key={estado.id} className="flex items-center">
+                  <input
+                    id={estado.nome}
+                    name="status"
+                    type="radio"
+                    value={estado.id}
+                    className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+                  />
+                  <label
+                    htmlFor={estado.nome}
+                    className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
+                  >
+                    <InvoiceStatus status={estado.nome} />
+                    <span className='hidden'>{estado.nome}</span>
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
         </div>
