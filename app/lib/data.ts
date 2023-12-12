@@ -261,6 +261,23 @@ export async function fetchStatus() {
   }
 }
 
+export async function fetchDepartment() {
+  try {
+    const data = await prisma.departamento.findMany({
+      select: { 
+        id: true, 
+        nome: true
+      }
+    });
+
+    const department = data;
+    return department;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all departments.');
+  }
+}
+
 export async function fetchFilteredCustomers(query: string) {
   try {
     const data = await sql<CustomersTable>`

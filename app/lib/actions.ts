@@ -5,9 +5,9 @@ import { generateRandomId } from './placeholder-data'
 export async function createDocument(formData: FormData) {
     const rawFormData = {
         documentId: generateRandomId(),
-        categoryId: formData.get('id'),
+        categoryId: formData.get('category'),
         name: formData.get('name'),
-        statusId: formData.get('id'),
+        statusId: formData.get('status'),
         //imgURL: formData.get('imgURL'),
         //userId: formData.get('userId'),
     };
