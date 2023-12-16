@@ -21,7 +21,7 @@ export default async function Page() {
                     },
                 ]}
             />
-            <Form categories={category} status={status} department={department}/>
+            <Form categories={category} status={status} departments={department}/>
         </main>
     );
 }

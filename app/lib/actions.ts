@@ -6,6 +6,7 @@ export async function createDocument(formData: FormData) {
     const rawFormData = {
         documentId: generateRandomId(),
         categoryId: formData.get('category'),
+        departmentId: formData.get('department'),
         name: formData.get('name'),
         statusId: formData.get('status'),
         //imgURL: formData.get('imgURL'),
@@ -13,5 +14,5 @@ export async function createDocument(formData: FormData) {
     };
     // Test it out:
     console.log(rawFormData);
-    console.log(typeof rawFormData.categoryId);
+    console.log(typeof rawFormData.departmentId);
 }
