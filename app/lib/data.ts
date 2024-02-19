@@ -157,7 +157,7 @@ export async function fetchFilteredInvoices(
       skip: offset,
     });
 
-    
+
     const invoices = data.map(({ id, titulo, dataCriacao, Categoria, Estado, Utilizador }) => ({
       id: id,
       titulo: titulo,
@@ -203,35 +203,43 @@ export async function fetchInvoicesPages(query: string) {
   }
 }
 
-export async function fetchInvoiceById(id: string) {
+export async function fetchDocumentById(id: string) {
   try {
-    const data = await sql<InvoiceForm>`
-      SELECT
-        invoices.id,
-        invoices.customer_id,
-        invoices.amount,
-        invoices.status
-      FROM invoices
-      WHERE invoices.id = ${id};
-    `;
+    const data = await prisma.documento.findUnique({
+      where: {
+        id: id,
+      },
+    })
 
-    const invoice = data.rows.map((invoice) => ({
-      ...invoice,
-      // Convert amount from cents to dollars
-      amount: invoice.amount / 100,
-    }));
-
-    return invoice[0];
+    const document = data;
+    
+    return document;
   } catch (error) {
     console.error('Database Error:', error);
+  }
+}
+
+export async function fetchUsers() {
+  try {
+    const data = await prisma.utilizador.findMany({
+      orderBy: {
+        nome: 'asc', // Ordene por nome
+      }
+    });
+
+    const users = data;
+    return users;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all Users.');
   }
 }
 
 export async function fetchCategory() {
   try {
     const data = await prisma.categoria.findMany({
-      select: { 
-        id: true, 
+      select: {
+        id: true,
         nome: true
       }
     });
@@ -247,8 +255,8 @@ export async function fetchCategory() {
 export async function fetchStatus() {
   try {
     const data = await prisma.estado.findMany({
-      select: { 
-        id: true, 
+      select: {
+        id: true,
         nome: true
       }
     });
@@ -264,8 +272,8 @@ export async function fetchStatus() {
 export async function fetchDepartment() {
   try {
     const data = await prisma.departamento.findMany({
-      select: { 
-        id: true, 
+      select: {
+        id: true,
         nome: true
       }
     });
