@@ -8,7 +8,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 const FormSchema = z.object({
-    documentId: z.function(),
+    documentId: z.string(),
     categoryId: z.string(),
     departmentId: z.string(),
     name: z.string(),
@@ -41,5 +41,5 @@ export async function createDocument(formData: FormData) {
     });
 
     revalidatePath('/dashboard/document');
-    redirect('dashboard/document');
+    redirect('/dashboard/document');
 }
