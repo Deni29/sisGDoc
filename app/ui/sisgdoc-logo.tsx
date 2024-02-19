@@ -8,7 +8,7 @@ export default function Sisgdoc() {
       className={`${lusitana.className} flex flex-row items-center justify-center leading-none text-white`}
     >
       <Image 
-        className="h-32 w-24" 
+        className="h-20 w-12" 
         src={logo}
         alt='SisGDoc Logo'  
       />
