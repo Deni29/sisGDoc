@@ -1,3 +1,4 @@
+//const bsv = require('scrypt-ts');
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt');
 const prisma = new PrismaClient();
@@ -23,7 +24,7 @@ const saltRounds = 10;
 
 // Função para gerar hash de senha usando bcrypt
 async function hashPassword(password) {
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  const hashedPassword = await bcrypt.hash(password, saltRounds);//bsv.PrivateKey.fromRandom(bsv.Networks.testnet);
   return hashedPassword;
 }
 

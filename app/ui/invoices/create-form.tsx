@@ -21,6 +21,7 @@ export default function Form({
   return (
     <form action={createDocument}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
+        
         {/* Document Category */}
         <div className="mb-4">
           <label htmlFor="category" className="mb-2 block text-sm font-medium">
