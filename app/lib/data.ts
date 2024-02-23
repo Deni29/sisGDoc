@@ -205,15 +205,13 @@ export async function fetchInvoicesPages(query: string) {
 
 export async function fetchDocumentById(id: string) {
   try {
-    const data = await prisma.documento.findUnique({
-      where: {
-        id: id,
-      },
-    })
+    const document = await prisma.documento.findUnique({
+      where: { id: id },
+    });
 
-    const document = data;
-    
+    console.log(document);
     return document;
+
   } catch (error) {
     console.error('Database Error:', error);
   }
@@ -221,13 +219,13 @@ export async function fetchDocumentById(id: string) {
 
 export async function fetchUsers() {
   try {
-    const data = await prisma.utilizador.findMany({
+    const users = await prisma.utilizador.findMany({
       orderBy: {
         nome: 'asc', // Ordene por nome
       }
     });
 
-    const users = data;
+    console.log(users);
     return users;
   } catch (err) {
     console.error('Database Error:', err);
