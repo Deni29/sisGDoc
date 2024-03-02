@@ -17,7 +17,7 @@ export default async function Page() {
                     },
                 ]}
             />
-            <Form documents={document}/>
+            <Form documents={documents}/>
         </main>
     );
 }
