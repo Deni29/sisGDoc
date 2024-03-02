@@ -1,60 +1,59 @@
 import Image from 'next/image';
-import { UpdateDocument, DeleteInvoice } from '@/app/ui/invoices/buttons';
-import InvoiceStatus from '@/app/ui/invoices/status';
+import { UpdateDocument, DeleteDocument } from '@/app/ui/documents/buttons';
+import DocumentStatus from '@/app/ui/documents/status';
 import { formatDateToLocal } from '@/app/lib/utils';
-import { fetchFilteredInvoices } from '@/app/lib/data';
+import { fetchFilteredDocuments } from '@/app/lib/data';
 
-export default async function InvoicesTable({
+export default async function DocumentsTable({
   query,
   currentPage,
 }: {
   query: string;
   currentPage: number;
 }) {
-  const invoices = await fetchFilteredInvoices(query, currentPage);
+  const documents = await fetchFilteredDocuments(query, currentPage);
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {invoices?.map((invoice) => (
+            {documents?.map((document) => (
               <div
-                key={invoice.id}
+                key={document.id}
                 className="mb-2 w-full rounded-md bg-white p-4"
               >
                 <div className="flex items-center justify-between border-b pb-4">
-                  {invoice?.utilizador.map(({ id, nome, imagemPerfil }) => (
-                    <div key={id}>
-                      <div className="mb-2 flex items-center">
-                        <Image
-                          src={imagemPerfil || '/'}
-                          className="mr-2 rounded-full"
-                          width={28}
-                          height={28}
-                          alt={`${nome}'s profile picture`}
-                        />
-                        <p>{nome}</p>
-                      </div>
-                      <p className="text-sm text-gray-500">{invoice.titulo}</p>
+                  <div>
+                    <div className="mb-2 flex items-center">
+                      <Image
+                        src={document.imagemPerfil || '/'}
+                        className="mr-2 rounded-full"
+                        width={28}
+                        height={28}
+                        alt={`${document.nome}'s profile picture`}
+                      />
+                      <p>{document.nome}</p>
                     </div>
-                  ))}
-                  <InvoiceStatus status={invoice.estado} />
+                    <p className="text-sm text-gray-500">{document.titulo}</p>
+                  </div>
+                  <DocumentStatus status={document.estado} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
                     <p className="text-xl font-medium">
-                      {invoice.categoria}
+                      {document.categoria}
                     </p>
-                    <p>{formatDateToLocal(invoice.dataCriacao.toString())}</p>
+                    <p>{formatDateToLocal(document.dataCriacao.toString())}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateDocument id={invoice.id} />
-                    <DeleteInvoice id={invoice.id} />
+                    <UpdateDocument id={document.id} />
+                    <DeleteDocument id={document.id} />
                   </div>
                 </div>
               </div>
             ))}
           </div>
+          
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
@@ -79,41 +78,39 @@ export default async function InvoicesTable({
               </tr>
             </thead>
             <tbody className="bg-white">
-              {invoices?.map((invoice) => (
+              {documents?.map((document) => (
                 <tr
-                  key={invoice.id}
+                  key={document.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    {invoice?.utilizador.map(({ id, nome, imagemPerfil }) => (
-                      <div key={id} className="flex items-center gap-3">
-                        <Image
-                          src={imagemPerfil}
-                          className="rounded-full"
-                          width={28}
-                          height={28}
-                          alt={`${nome}'s profile picture`}
-                        />
-                        <p>{nome}</p>
-                      </div>
-                    ))}
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={document.imagemPerfil}
+                        className="rounded-full"
+                        width={28}
+                        height={28}
+                        alt={`${document.nome}'s profile picture`}
+                      />
+                      <p>{document.nome}</p>
+                    </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {invoice.titulo}
+                    {document.titulo}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {invoice.categoria}
+                    {document.categoria}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {formatDateToLocal(invoice.dataCriacao.toString())}
+                    {formatDateToLocal(document.dataCriacao.toString())}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    <InvoiceStatus status={invoice.estado} />
+                    <DocumentStatus status={document.estado} />
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateDocument id={invoice.id} />
-                      <DeleteInvoice id={invoice.id} />
+                      <UpdateDocument id={document.id} />
+                      <DeleteDocument id={document.id} />
                     </div>
                   </td>
                 </tr>

@@ -1,5 +1,5 @@
-import Form from '@/app/ui/invoices/edit-form';
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Form from '@/app/ui/documents/edit-form';
+import Breadcrumbs from '@/app/ui/documents/breadcrumbs';
 import { fetchDocumentById, fetchCategory, fetchDepartment, fetchStatus } from '@/app/lib/data';
 
 export default async function Page({ params }: { params: { id: string } }) {

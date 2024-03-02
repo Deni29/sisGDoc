@@ -87,7 +87,7 @@ export async function fetchCardData() {
 }
 
 const ITEMS_PER_PAGE = 6;
-export async function fetchFilteredInvoices(
+export async function fetchFilteredDocuments(
   query: string,
   currentPage: number,
 ) {
@@ -96,41 +96,27 @@ export async function fetchFilteredInvoices(
   try {
     const data = await prisma.documento.findMany({
       include: {
-        Categoria: {
-          select: {
-            nome: true,
-          }
-        },
-        Estado: {
-          select: {
-            nome: true
-          }
-        },
         Utilizador: {
-          include: {
-            utilizador: {
+          select: {
+            id: true,
+            nome: true,
+            Perfil: {
               select: {
                 id: true,
-                nome: true,
-                Perfil: {
-                  select: {
-                    id: true,
-                    image_url: true
-                  }
-                },
+                image_url: true
               }
             },
-          },
+          }
         },
       },
       where: {
         OR: [
           { titulo: { contains: query } },
           // { dataCriacao: query },
-          { Estado: { nome: { contains: query } } },
-          { Categoria: { nome: { contains: query } } },
-          { Utilizador: { some: { utilizador: { nome: { contains: query } } } } },
-          { Utilizador: { some: { utilizador: { email: { contains: query } } } } },
+          { status: { contains: query } },
+          { Categoria: { contains: query } },
+          { Utilizador: { nome: { contains: query } } },
+          { Utilizador: { email: { contains: query } } },
         ]
       },
       orderBy: { dataCriacao: 'desc' },
@@ -139,22 +125,20 @@ export async function fetchFilteredInvoices(
     });
 
 
-    const invoices = data.map(({ id, titulo, dataCriacao, Categoria, Estado, Utilizador }) => ({
+    const documents = data.map(({ id, titulo, dataCriacao, Categoria, status, Utilizador }) => ({
       id: id,
       titulo: titulo,
       dataCriacao: dataCriacao,
-      categoria: Categoria.nome,
-      estado: Estado.nome,
+      categoria: Categoria,
+      estado: status,
 
-      utilizador: Utilizador.map(({ utilizador }) => ({
-        id: utilizador.id,
-        nome: utilizador.nome,
-        imagemPerfil: utilizador.Perfil?.image_url || '/',
-      })),
-    }));
+      id: Utilizador?.id,
+      nome: Utilizador?.nome,
+      imagemPerfil: Utilizador?.Perfil?.image_url || '/',
+    }))
 
-    // console.log(invoices);
-    return invoices;
+    // console.log(documents);
+    return documents;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch documents.');
@@ -170,8 +154,8 @@ export async function fetchDocumentsPages(query: string) {
           // { dataCriacao: query },
           { status: { contains: query } },
           { Categoria: { contains: query } },
-          // { Utilizadores: { nome: { contains: query } } },
-          // { Utilizadores: { email: { contains: query } } },
+          { Utilizador: { nome: { contains: query } } },
+          { Utilizador: { email: { contains: query } } },
         ],
       },
     });
@@ -181,6 +165,22 @@ export async function fetchDocumentsPages(query: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch total number of documents.');
+  }
+}
+
+export async function fetchDocuments() {
+  try {
+    const documents = await prisma.documento.findMany({
+      orderBy: {
+        titulo: 'asc', // Ordene por titulo
+      }
+    });
+
+    console.log(documents);
+    return documents;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all Documents.');
   }
 }
 
@@ -239,40 +239,6 @@ export async function fetchUsers() {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all Users.');
-  }
-}
-
-export async function fetchCategory() {
-  try {
-    const data = await prisma.categoria.findMany({
-      select: {
-        id: true,
-        nome: true
-      }
-    });
-
-    const categories = data;
-    return categories;
-  } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch all categories.');
-  }
-}
-
-export async function fetchStatus() {
-  try {
-    const data = await prisma.estado.findMany({
-      select: {
-        id: true,
-        nome: true
-      }
-    });
-
-    const status = data;
-    return status;
-  } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch all status.');
   }
 }
 
