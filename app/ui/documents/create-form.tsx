@@ -91,24 +91,54 @@ export default function Form({ documents, }: { documents: Documento[], }) {
           </label>
           <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
             <div className="flex gap-4">
-              {documents.map((estado) => (
-                <div key={estado.id} className="flex items-center">
-                  <input
-                    id={estado.status}
-                    name="status"
-                    type="radio"
-                    value={estado.id}
-                    className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
-                  />
-                  <label
-                    htmlFor={estado.status}
-                    className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
-                  >
-                    <DocumentStatus status={estado.status} />
-                    <span className='hidden'>{estado.status}</span>
-                  </label>
-                </div>
-              ))}
+              <div className="flex items-center">
+                <input
+                  id="Pendente"
+                  name="status"
+                  type="radio"
+                  value="Pendente"
+                  className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+                />
+                <label
+                  htmlFor="Pendente"
+                  className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
+                >
+                  <DocumentStatus status="Pendente" />
+                  <span className='hidden'>Pendente</span>
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  id="Em progresso"
+                  name="status"
+                  type="radio"
+                  value="Em progresso"
+                  className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+                />
+                <label
+                  htmlFor="Em progresso"
+                  className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
+                >
+                  <DocumentStatus status="Em progresso" />
+                  <span className='hidden'>Em progresso</span>
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  id="Concluído"
+                  name="status"
+                  type="radio"
+                  value="Concluído"
+                  className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+                />
+                <label
+                  htmlFor="Concluído"
+                  className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
+                >
+                  <DocumentStatus status="Concluído" />
+                  <span className='hidden'>Concluído</span>
+                </label>
+              </div>
             </div>
           </div>
         </div>
