@@ -1,12 +1,14 @@
 import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
-import { fetchDocumentById, fetchUsers } from '@/app/lib/data';
+import { fetchDocumentById, fetchCategory, fetchDepartment, fetchStatus } from '@/app/lib/data';
 
 export default async function Page({ params }: { params: { id: string } }) {
     const id = params.id;
-    const [document, users] = await Promise.all([
+    const [document, categories, departments, estados] = await Promise.all([
         fetchDocumentById(id),
-        fetchUsers(),
+        fetchCategory(),
+        fetchDepartment(),
+        fetchStatus(),
     ]);
     return (
         <main>
@@ -20,7 +22,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     },
                 ]}
             />
-            <Form document={document} users={users} />
+            <Form document={document} categories={categories} departments={departments} estados={estados} />
         </main>
     );
 }

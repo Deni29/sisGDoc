@@ -1,74 +1,43 @@
 //const bsv = require('scrypt-ts');
 const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcrypt');
-const prisma = new PrismaClient();
-
-// Desestruturação do placeholder
 const {
-  grupos,
-  permissoes,
-  categorias,
-  estado,
-  generos,
-  departamentos,
   utilizadores,
   perfis,
+  gruposUtilizadores,
+  permissoes,
   documentos,
   telefones,
+  departamentos,
   auditorias,
-  utilizadorDocumentos,
-} = require('../app/lib/placeholder-data');
+} = require('../app/lib/placeholder-data'); // Supondo que você tenha salvo os dados fictícios em um arquivo chamado data.js
 
-// Configura o número de "salt rounds" para o bcrypt (usado para fazer hash de senhas)
-const saltRounds = 10;
+const prisma = new PrismaClient();
 
-// Função para gerar hash de senha usando bcrypt
-async function hashPassword(password) {
-  const hashedPassword = await bcrypt.hash(password, saltRounds);//bsv.PrivateKey.fromRandom(bsv.Networks.testnet);
-  return hashedPassword;
-}
-
-// Função para realizar o seed dos dados
-async function seedData() {
+async function seed() {
   try {
-    // Inserir Grupos
-    await prisma.grupoUtilizadores.createMany({ data: grupos });
+    // Inserir dados de grupos de utilizadores
+    await prisma.grupoUtilizadores.createMany({ data: gruposUtilizadores });
 
-    // Inserir Permissoes
-    await prisma.permissoes.createMany({ data: permissoes });
-
-    // Inserir Categorias
-    await prisma.categoria.createMany({ data: categorias });
-
-    // Inserir Estado
-    await prisma.estado.createMany({ data: estado });
-
-    // Inserir Generos
-    await prisma.genero.createMany({ data: generos });
-
-    // Inserir Departamentos
+    // Inserir dados de departamentos
     await prisma.departamento.createMany({ data: departamentos });
 
-    // Inserir Utilizadores
-    for (const usuario of utilizadores) {
-      usuario.palavra_passe = await hashPassword(usuario.palavra_passe);
-    }
+    // Inserir dados de utilizadores
     await prisma.utilizador.createMany({ data: utilizadores });
 
-    // Inserir Perfis
+    // Inserir dados de perfis
     await prisma.perfil.createMany({ data: perfis });
 
-    // Inserir Documentos
+    // Inserir dados de permissões
+    await prisma.permissoes.createMany({ data: permissoes });
+
+    // Inserir dados de documentos
     await prisma.documento.createMany({ data: documentos });
 
-    // Inserir Telefones
+    // Inserir dados de telefones
     await prisma.telefone.createMany({ data: telefones });
 
-    // Inserir Auditorias
+    // Inserir dados de auditorias
     await prisma.auditoria.createMany({ data: auditorias });
-
-    // Inserir UtilizadorDocumentos
-    await prisma.utilizadorDocumento.createMany({ data: utilizadorDocumentos });
 
     console.log('Dados inseridos com sucesso!');
   } catch (error) {
@@ -76,7 +45,7 @@ async function seedData() {
   } finally {
     await prisma.$disconnect();
   }
-};
+}
 
 // Executar a função de seed
-seedData();
+seed();

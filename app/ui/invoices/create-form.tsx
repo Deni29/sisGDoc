@@ -8,15 +8,16 @@ import {
 import { Button } from '../button';
 import { createDocument } from '@/app/lib/actions';
 import InvoiceStatus from '@/app/ui/invoices/status';
+import { Categoria, Estado, Departamento } from '@prisma/client';
 
 export default function Form({
   categories,
   status,
   departments,
 }: {
-  categories: { id: string, nome: string }[],
-  status: { id: string, nome: string }[],
-  departments: { id: string, nome: string }[],
+  categories: Categoria[],
+  status: Estado[],
+  departments: Departamento[],
 }) {
   return (
     <form action={createDocument}>
@@ -120,6 +121,9 @@ export default function Form({
           </div>
         </div>
       </div>
+
+      {/* Document User */}
+      
       <div className="mt-6 flex justify-end gap-4">
         <Link
           href="/dashboard/document"

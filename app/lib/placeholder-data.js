@@ -1,4 +1,4 @@
-//const { equire('@/ Função para gerar IDs aleatórios de 36 caracteres
+//Função para gerar IDs aleatórios de 36 caracteres
 function generateRandomId(length='36') {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let randomId = '';
@@ -20,137 +20,145 @@ function generateAngolanPhoneNumber() {
   return `+244${randomPrefix}${randomNumber}`;
 }
 
-// Dados para a tabela GrupoUtilizadores
-const grupos = [
-  { id: generateRandomId(), nome: 'Admins', descricao: 'Administradores do sistema' },
-  { id: generateRandomId(), nome: 'Professores', descricao: 'Corpo docente da universidade' },
-  { id: generateRandomId(), nome: 'Estudantes', descricao: 'Alunos da universidade' },
+const gruposUtilizadores = [
+  {
+    id: generateRandomId(),
+    nome: 'Administradores',
+    descricao: 'Grupo de administradores do sistema',
+  },
+  {
+    id: generateRandomId(),
+    nome: 'Usuários Padrão',
+    descricao: 'Grupo de usuários comuns',
+  },
+  // Adicione mais grupos conforme necessário
 ];
 
-// Dados para a tabela Permissoes
-const permissoes = [
-  { id: generateRandomId(), nivel: 'Leitura', recurso: 'Documentos', grupoUtilizadoresId: grupos[1].id },
-  { id: generateRandomId(), nivel: 'Escrita', recurso: 'Documentos', grupoUtilizadoresId: grupos[1].id },
-  { id: generateRandomId(), nivel: 'Admin', recurso: 'Sistema', grupoUtilizadoresId: grupos[0].id },
-];
-
-// Dados para a tabela Categoria
-const categorias = [
-  { id: generateRandomId(), nome: 'Ensino' },
-  { id: generateRandomId(), nome: 'Pesquisa' },
-  { id: generateRandomId(), nome: 'Administração' },
-];
-
-// Dados para a tabela Estado
-const estado = [
-  { id: generateRandomId(), nome: 'Pendente' },
-  { id: generateRandomId(), nome: 'Em progresso' },
-  { id: generateRandomId(), nome: 'Concluído' },
-];
-
-// Dados para a tabela Genero
-const generos = [
-  { id: generateRandomId(), denominacao: 'Masculino' },
-  { id: generateRandomId(), denominacao: 'Feminino' },
-  { id: generateRandomId(), denominacao: 'Outro' },
-];
-
-// Dados para a tabela Departamento
 const departamentos = [
-  { id: generateRandomId(), nome: 'Departamento de Ciências da Computação', descricao: '...' },
-  { id: generateRandomId(), nome: 'Departamento de Matemática', descricao: '...' },
+  {
+    id: generateRandomId(),
+    nome: 'Departamento 1',
+    descricao: 'Descrição do departamento 1',
+  },
+  {
+    id: generateRandomId(),
+    nome: 'Departamento 2',
+    descricao: 'Descrição do departamento 2',
+  },
+  // Adicione mais departamentos conforme necessário
 ];
 
-// Dados para a tabela Utilizador
 const utilizadores = [
   {
     id: generateRandomId(),
-    nome: 'Admin',
-    email: 'admin@example.com',
+    nome: 'João Silva',
+    email: 'joao@example.com',
     palavra_passe: 'senha123',
-    grupoUtilizadoresId: grupos[0].id,
+    grupoUtilizadoresId: gruposUtilizadores[0].id,
   },
   {
     id: generateRandomId(),
-    nome: 'Professor1',
-    email: 'professor1@example.com',
-    palavra_passe: 'senha123',  
-    grupoUtilizadoresId: grupos[1].id,
+    nome: 'Maria Santos',
+    email: 'maria@example.com',
+    palavra_passe: 'senha456',
+    grupoUtilizadoresId: gruposUtilizadores[1].id,
   },
-  {
-    id: generateRandomId(),
-    nome: 'Estudante1',
-    email: 'estudante1@example.com',
-    palavra_passe: 'senha123',  
-    grupoUtilizadoresId: grupos[2].id,
-  },
+  // Adicione mais usuários conforme necessário
 ];
 
-// Dados para a tabela Perfil
 const perfis = [
-  { id: generateRandomId(), image_url: '/assets/img/users/hector-simpson.png', bio: 'Descrição do perfil', generoId: generos[0].id, utilizadorId: utilizadores[0].id },
-  { id: generateRandomId(), image_url: '/assets/img/users/guillermo-rauch.png', bio: 'Descrição do perfil', generoId: generos[0].id, utilizadorId: utilizadores[1].id },
+  {
+    id: generateRandomId(),
+    image_url: '../img/users/michael-novotny.png',
+    bio: 'Descrição do perfil 1',
+    genero: 'Masculino',
+    utilizadorId: utilizadores[0].id,
+  },
+  {
+    id: generateRandomId(),
+    image_url: '../img/users/amy-burns.png',
+    bio: 'Descrição do perfil 2',
+    genero: 'Feminino',
+    utilizadorId: utilizadores[1].id,
+  },
+  // Adicione mais perfis conforme necessário
 ];
 
-// Dados para a tabela Documento
+const permissoes = [
+  {
+    id: generateRandomId(),
+    nivel: 'admin',
+    recurso: 'todos',
+    grupoUtilizadoresId: gruposUtilizadores[0].id,
+  },
+  {
+    id: generateRandomId(),
+    nivel: 'user',
+    recurso: 'leitura',
+    grupoUtilizadoresId: gruposUtilizadores[1].id,
+  },
+  // Adicione mais permissões conforme necessário
+];
+
 const documentos = [
   {
     id: generateRandomId(),
-    titulo: 'Documento1',
+    titulo: 'Documento 1',
     conteudo: 'Conteúdo do documento 1',
-    categoriaId: categorias[0].id,
-    estadoId: estado[0].id,
-    image_url: '/',
+    Categoria: 'Categoria A',
+    utilizadorId: utilizadores[0].id,
+    departamentoId: departamentos[0].id,
   },
   {
     id: generateRandomId(),
-    titulo: 'Documento2',
+    titulo: 'Documento 2',
     conteudo: 'Conteúdo do documento 2',
-    categoriaId: categorias[1].id,
-    estadoId: estado[1].id,
-    image_url: '/',
+    Categoria: 'Categoria B',
+    utilizadorId: utilizadores[1].id,
+    departamentoId: departamentos[1].id,
+  },
+  // Adicione mais documentos conforme necessário
+];
+
+const telefones = [
+  {
+    id: generateRandomId(),
+    numeroTelefone: generateAngolanPhoneNumber(),
+    perfilId: perfis[0].id,
   },
   {
     id: generateRandomId(),
-    titulo: 'Documento3',
-    conteudo: 'Conteúdo do documento 3',
-    categoriaId: categorias[2].id,
-    estadoId: estado[2].id,
-    image_url: '/',
+    numeroTelefone: generateAngolanPhoneNumber(),
+    perfilId: perfis[1].id,
   },
+  // Adicione mais telefones conforme necessário
 ];
 
-// Dados para a tabela Telefone
-const telefones = [
-  { id: generateRandomId(), numeroTelefone: generateAngolanPhoneNumber(), PerfilId: perfis[0].id },
-
-];
-
-// Dados para a tabela Auditoria
 const auditorias = [
-  { id: generateRandomId(), alteracao: 'Alteração 1' },
-  { id: generateRandomId(), alteracao: 'Alteração 2' },
+  {
+    id: generateRandomId(),
+    alteracao: 'Alteração 1',
+    utilizadorId: utilizadores[0].id,
+    documentoId: documentos[0].id,
+  },
+  {
+    id: generateRandomId(),
+    alteracao: 'Alteração 2',
+    utilizadorId: utilizadores[1].id,
+    documentoId: documentos[1].id,
+  },
+  // Adicione mais auditorias conforme necessário
 ];
 
-// Dados para a tabela UtilizadorDocumento
-const utilizadorDocumentos = [
-  { id: generateRandomId(), utilizadorId: utilizadores[0].id, documentoId: documentos[0].id },
-  { id: generateRandomId(), utilizadorId: utilizadores[1].id, documentoId: documentos[1].id },
-  { id: generateRandomId(), utilizadorId: utilizadores[1].id, documentoId: documentos[2].id },
-];
 
 module.exports = {
-  grupos,
-  permissoes,
-  categorias,
-  estado,
-  generos,
-  departamentos,
   utilizadores,
   perfis,
+  gruposUtilizadores,
+  permissoes,
   documentos,
   telefones,
+  departamentos,
   auditorias,
-  utilizadorDocumentos,
   generateRandomId
 };

@@ -2,10 +2,10 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
-import { fetchLatestInvoices } from '@/app/lib/data';
+import { fetchLatestDocuments, fetchUserById, fetchProfileByUserId } from '@/app/lib/data';
 
-export default async function LatestInvoices() {
-  const latestInvoices = await fetchLatestInvoices();
+export default async function LatestDocuments() {
+  const latestDocuments = await fetchLatestDocuments();
 
   return (
     <div className="flex w-full flex-col md:col-span-4 lg:col-span-4">
@@ -16,10 +16,13 @@ export default async function LatestInvoices() {
         {/* NOTE: comment in this code when you get to this point in the course */}
 
         <div className="bg-white px-6">
-          {latestInvoices.map((invoice, i) => {
+          {latestDocuments.map(async (document, i) => {
+            const user = await fetchUserById(document?.utilizadorId || '');
+            const profile = await fetchProfileByUserId(document?.utilizadorId || '');
+
             return (
               <div
-                key={invoice.id}
+                key={document.id}
                 className={clsx(
                   'flex flex-row items-center justify-between py-4',
                   {
@@ -27,36 +30,34 @@ export default async function LatestInvoices() {
                   },
                 )}
               >
-                {invoice.Utilizador.map(({utilizador}) => {
-                  return (
-                    <div className="flex items-center" key={invoice.id}>
-                      <Image
-                        src={utilizador.Perfil?.image_url || '/'}
-                        alt={`${utilizador.nome}'s profile picture`}
-                        className="mr-4 rounded-full"
-                        width={32}
-                        height={32}
-                      />
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold md:text-base">
-                          {utilizador.nome}
-                        </p>
-                        <p className="hidden text-sm text-gray-500 sm:block">
-                          {utilizador.email}
-                        </p>
-                      </div>
-                    </div>
-                  )
-                })}
+                <div className="flex items-center" key={document.id}>
+                  <Image
+                    src={profile?.image_url || '/'}
+                    alt={`${user?.nome ? user.nome : 'User'}'s profile picture`}
+                    className="mr-4 rounded-full"
+                    width={32}
+                    height={32}
+                  />
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold md:text-base">
+                      {user?.nome || 'User name'}
+                    </p>
+                    <p className="hidden text-sm text-gray-500 sm:block">
+                      {user?.email || 'User email'}
+                    </p>
+                  </div>
+                </div>
+
                 <p
                   className={`${lusitana.className} truncate text-sm font-medium md:text-base`}
                 >
-                  {invoice.titulo}
+                  {document.titulo}
                 </p>
               </div>
             );
           })}
         </div>
+
         <div className="flex items-center pb-2 pt-6">
           <ArrowPathIcon className="h-5 w-5 text-gray-500" />
           <h3 className="ml-2 text-sm text-gray-500 ">Updated just now</h3>

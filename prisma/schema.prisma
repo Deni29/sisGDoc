@@ -8,23 +8,23 @@ datasource db {
 }
 
 model Utilizador {
-  id                  String                @id @db.VarChar(36)
-  nome                String                @db.VarChar(255)
-  email               String                @unique @db.VarChar(255)
-  palavra_passe       String                @db.VarChar(255)
-  dataCadastro        DateTime              @default(now())
-  grupo               GrupoUtilizadores     @relation(fields: [grupoUtilizadoresId], references: [id])
+  id                  String            @id @db.VarChar(36)
+  nome                String            @db.VarChar(255)
+  email               String            @unique @db.VarChar(255)
+  palavra_passe       String            @db.VarChar(255)
+  dataCadastro        DateTime          @default(now())
+  grupo               GrupoUtilizadores @relation(fields: [grupoUtilizadoresId], references: [id])
   grupoUtilizadoresId String
   Perfil              Perfil?
-  Documento           UtilizadorDocumento[]
+  documento           Documento[]
+  auditoria           Auditoria[]
 }
 
 model Perfil {
   id           String     @id @db.VarChar(36)
   image_url    String     @default("/") @db.VarChar(255)
   bio          String?    @db.Text
-  genero       Genero     @relation(fields: [generoId], references: [id])
-  generoId     String
+  genero       Genero
   utilizador   Utilizador @relation(fields: [utilizadorId], references: [id])
   utilizadorId String     @unique
   telefone     Telefone?
@@ -34,8 +34,8 @@ model GrupoUtilizadores {
   id         String       @id @db.VarChar(36)
   nome       String       @unique @db.VarChar(255)
   descricao  String       @db.Text
-  Utilizador Utilizador[]
-  Permissoes Permissoes[]
+  utilizador Utilizador[]
+  permissoes Permissoes[]
 }
 
 model Permissoes {
@@ -46,46 +46,28 @@ model Permissoes {
   grupoUtilizadoresId String
 }
 
-model Categoria {
-  id         String      @id @db.VarChar(36)
-  nome       String      @unique @db.VarChar(255)
-  documentos Documento[]
-}
-
 model Documento {
-  id               String    @id @db.VarChar(36)
-  titulo           String    @unique @db.VarChar(255)
-  conteudo         String    @db.Text
-  Categoria        Categoria @relation(fields: [categoriaId], references: [id])
-  categoriaId      String
-  Estado           Estado    @relation(fields: [estadoId], references: [id])
-  estadoId         String    @default("Pendente")
-  image_url        String    @default("/") @db.VarChar(255)
-  dataCriacao      DateTime  @default(now())
-  dataActualizacao DateTime  @updatedAt
+  id               String   @id @db.VarChar(36)
+  titulo           String   @unique @db.VarChar(255)
+  conteudo         String   @db.Text
+  Categoria        String   @unique @db.VarChar(255)
+  status           String   @default("Pendente")
+  image_url        String   @default("/") @db.VarChar(255)
+  dataCriacao      DateTime @default(now())
+  dataActualizacao DateTime @updatedAt
 
-  departamento Departamento[]
-  Auditoria    Auditoria[]
-  Utilizador   UtilizadorDocumento[]
+  Departamento   Departamento? @relation(fields: [departamentoId], references: [id])
+  departamentoId String?       @db.VarChar(36)
+  Utilizador     Utilizador?   @relation(fields: [utilizadorId], references: [id])
+  utilizadorId   String?       @db.VarChar(36)
+  Auditoria      Auditoria[]
 }
 
 model Telefone {
   id             String @id @db.VarChar(36)
   numeroTelefone String @unique @db.VarChar(255)
-  Perfil         Perfil @relation(fields: [PerfilId], references: [id])
-  PerfilId       String @unique
-}
-
-model Estado {
-  id        String      @id @db.VarChar(36)
-  nome String      @db.VarChar(255)
-  Documento Documento[]
-}
-
-model Genero {
-  id          String   @id @db.VarChar(36)
-  denominacao String   @unique @db.VarChar(255)
-  Perfil      Perfil[]
+  perfil         Perfil @relation(fields: [perfilId], references: [id])
+  perfilId       String @unique
 }
 
 model Departamento {
@@ -96,17 +78,17 @@ model Departamento {
 }
 
 model Auditoria {
-  id        String      @id @db.VarChar(36)
-  alteracao String      @db.Text
-  data      DateTime    @default(now())
-  Documento Documento[]
+  id           String      @id @db.VarChar(36)
+  alteracao    String      @db.Text
+  data         DateTime    @default(now())
+  Documento    Documento?  @relation(fields: [documentoId], references: [id])
+  documentoId  String?     @db.VarChar(36)
+  Utilizador   Utilizador? @relation(fields: [utilizadorId], references: [id])
+  utilizadorId String?     @db.VarChar(36)
 }
 
-model UtilizadorDocumento {
-  id             String     @id @db.VarChar(36)
-  dataAtribuicao DateTime   @default(now())
-  utilizador     Utilizador @relation(fields: [utilizadorId], references: [id])
-  utilizadorId   String
-  documento      Documento  @relation(fields: [documentoId], references: [id])
-  documentoId    String
+enum Genero {
+  Masculino
+  Feminino
+  Outro
 }

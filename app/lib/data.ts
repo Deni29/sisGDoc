@@ -6,7 +6,7 @@ import { formatCurrency, formatDateToLocal } from './utils';
 
 const prisma = new PrismaClient();
 
-export async function fetchRevenue() {
+export async function fetchAudit() {
   // Add noStore() here prevent the response from being cached.
   // This is equivalent to in fetch(..., {cache: 'no-store'}).
 
@@ -14,42 +14,27 @@ export async function fetchRevenue() {
     // Artificially delay a reponse for demo purposes.
     // Don't do this in real life :)
 
-    console.log('Fetching revenue data...');
+    console.log('Fetching audit data...');
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await prisma.auditoria.findMany();
 
     console.log('Data fetch complete after 3 seconds.');
 
-    return data.values();
+    return data.values() || '1';
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch revenue data.');
+    throw new Error('Failed to fetch audit data.');
   }
 }
 
-export async function fetchLatestInvoices() {
+export async function fetchLatestDocuments() {
   try {
     const data = await prisma.documento.findMany({
       select: {
         id: true,
         titulo: true,
-        Utilizador: {
-          select: {
-            utilizador: {
-              select: {
-                id: true,
-                nome: true,
-                email: true,
-                Perfil: {
-                  select: {
-                    image_url: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        utilizadorId: true,
       },
       orderBy: {
         dataActualizacao: 'desc', // Ordene pela data de atualização em ordem decrescente
@@ -57,8 +42,8 @@ export async function fetchLatestInvoices() {
       take: 5, // Obtenha os últimos 5 documentos
     });
 
-    const latestInvoices = data;
-    return latestInvoices;
+    const latestDocuments = data;
+    return latestDocuments;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch the latest documents.');
@@ -72,24 +57,20 @@ export async function fetchCardData() {
     // how to initialize multiple queries in parallel with JS.
     const invoiceCountPromise = prisma.documento.findMany();
     const customerCountPromise = prisma.utilizador.findMany();
-    const invoiceStatusPromise = prisma.estado.findMany();
     const auditoriaCountPromise = prisma.auditoria.findMany();
 
     const data = await Promise.all([
       invoiceCountPromise,
       customerCountPromise,
-      invoiceStatusPromise,
       auditoriaCountPromise,
     ]);
 
     const numberOfDocuments = Number(data[0].length ?? '0');
     const numberOfUsers = Number(data[1].length ?? '0');
-    const totalAuditoria = Number(data[3].length ?? '0');
+    const totalAuditoria = Number(data[2].length ?? '0');
     const totalPendingDocuments = Number(await prisma.documento.count({
       where: {
-        Estado: {
-          nome: 'Pendente',
-        }
+        status: 'Pendente',
       }
     }) ?? '0');
 
@@ -180,17 +161,17 @@ export async function fetchFilteredInvoices(
   }
 }
 
-export async function fetchInvoicesPages(query: string) {
+export async function fetchDocumentsPages(query: string) {
   try {
     const count = await prisma.documento.count({
       where: {
         OR: [
           { titulo: { contains: query } },
           // { dataCriacao: query },
-          { Estado: { nome: { contains: query } } },
-          { Categoria: { nome: { contains: query } } },
-          { Utilizador: { some: { utilizador: { nome: { contains: query } } } } },
-          { Utilizador: { some: { utilizador: { email: { contains: query } } } } },
+          { status: { contains: query } },
+          { Categoria: { contains: query } },
+          // { Utilizadores: { nome: { contains: query } } },
+          // { Utilizadores: { email: { contains: query } } },
         ],
       },
     });
@@ -211,6 +192,34 @@ export async function fetchDocumentById(id: string) {
 
     console.log(document);
     return document;
+
+  } catch (error) {
+    console.error('Database Error:', error);
+  }
+}
+
+export async function fetchUserById(id: string) {
+  try {
+    const user = await prisma.utilizador.findUnique({
+      where: { id: id },
+    });
+
+    console.log(user);
+    return user;
+
+  } catch (error) {
+    console.error('Database Error:', error);
+  }
+}
+
+export async function fetchProfileByUserId(id: string) {
+  try {
+    const userProfile = await prisma.perfil.findUnique({
+      where: { utilizadorId: id },
+    });
+
+    console.log(userProfile);
+    return userProfile;
 
   } catch (error) {
     console.error('Database Error:', error);
