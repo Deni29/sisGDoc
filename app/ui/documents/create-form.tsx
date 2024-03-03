@@ -8,15 +8,13 @@ import {
 import { Button } from '../button';
 import { createDocument } from '@/app/lib/actions';
 import DocumentStatus from '@/app/ui/documents/status';
-import { Utilizador, Documento, Departamento } from '@prisma/client';
+import { Utilizador, Departamento } from '@prisma/client';
 
 export default function Form({
   users,
-  documents,
   departments
 }: {
   users: Utilizador[],
-  documents: Documento[],
   departments: Departamento[]
 }) {
   const categories = [
@@ -68,7 +66,7 @@ export default function Form({
               <option value="" disabled>
                 Selecione uma categoria
               </option>
-              {categories.map((category, i) => (
+              {categories.map((category) => (
                 <option key={category} value={category.valueOf()}>
                   {category.valueOf()}
                 </option>

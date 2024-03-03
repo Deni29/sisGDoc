@@ -2,7 +2,7 @@
 
 import { generateRandomId } from './placeholder-data'
 import { z } from 'zod'
-import { PrismaClient } from '@prisma/client';
+import { Categoria, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -10,7 +10,6 @@ import { redirect } from 'next/navigation';
 const FormSchema = z.object({
     documentId: z.string(),
     name: z.string(),
-    category: z.string(),
     conteudo: z.string(),
     status: z.string(),
     user: z.string(),
@@ -20,16 +19,17 @@ const FormSchema = z.object({
 const CreateDocument = FormSchema.omit({})
 
 export async function createDocument(formData: FormData) {
-    const { documentId, name, category, conteudo, status, user, department } = CreateDocument.parse({
+    const { documentId, name, conteudo, status, user, department } = CreateDocument.parse({
         documentId: generateRandomId(),
         name: formData.get('name'),
-        category: formData.get('category'),
         conteudo: formData.get('conteudo'),
         status: formData.get('status'),
         user: formData.get('user'),
         department: formData.get('department'),
         //imgURL: formData.get('imgURL'),
     });
+
+    const  category = formData.get('category') as Categoria;
 
     await prisma.documento.createMany({
         data: [
