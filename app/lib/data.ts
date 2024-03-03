@@ -1,5 +1,6 @@
 import {
   PrismaClient,
+  //Categoria
 } from '@prisma/client';
 
 import { formatCurrency, formatDateToLocal } from './utils';
@@ -114,7 +115,7 @@ export async function fetchFilteredDocuments(
           { titulo: { contains: query } },
           // { dataCriacao: query },
           { status: { contains: query } },
-          { Categoria: { contains: query } },
+          //{ Categoria: { contains: query } },
           { Utilizador: { nome: { contains: query } } },
           { Utilizador: { email: { contains: query } } },
         ]
@@ -132,7 +133,7 @@ export async function fetchFilteredDocuments(
       categoria: Categoria,
       estado: status,
 
-      id: Utilizador?.id,
+      utilizadorId: Utilizador?.id,
       nome: Utilizador?.nome,
       imagemPerfil: Utilizador?.Perfil?.image_url || '/',
     }))
@@ -153,7 +154,7 @@ export async function fetchDocumentsPages(query: string) {
           { titulo: { contains: query } },
           // { dataCriacao: query },
           { status: { contains: query } },
-          { Categoria: { contains: query } },
+          //{ Categoria: { contains: query } },
           { Utilizador: { nome: { contains: query } } },
           { Utilizador: { email: { contains: query } } },
         ],

@@ -69,14 +69,14 @@ const utilizadores = [
 const perfis = [
   {
     id: generateRandomId(),
-    image_url: '../img/users/michael-novotny.png',
+    image_url: '/img/users/michael-novotny.png',
     bio: 'Descrição do perfil 1',
     genero: 'Masculino',
     utilizadorId: utilizadores[0].id,
   },
   {
     id: generateRandomId(),
-    image_url: '../img/users/amy-burns.png',
+    image_url: '/img/users/amy-burns.png',
     bio: 'Descrição do perfil 2',
     genero: 'Feminino',
     utilizadorId: utilizadores[1].id,
