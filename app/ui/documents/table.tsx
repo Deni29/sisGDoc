@@ -46,8 +46,8 @@ export default async function DocumentsTable({
                     <p>{formatDateToLocal(document.dataCriacao.toString())}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateDocument id={document.id} />
-                    <DeleteDocument id={document.id} />
+                    <UpdateDocument id={document.id as string} />
+                    <DeleteDocument id={document.id as string} />
                   </div>
                 </div>
               </div>
@@ -109,8 +109,8 @@ export default async function DocumentsTable({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateDocument id={document.id} />
-                      <DeleteDocument id={document.id} />
+                      <UpdateDocument id={document.id as string} />
+                      <DeleteDocument id={document.id as string} />
                     </div>
                   </td>
                 </tr>

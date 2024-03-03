@@ -21,7 +21,7 @@ const CreateDocument = FormSchema.omit({})
 
 export async function createDocument(formData: FormData) {
     const { documentId, name, category, conteudo, status, user, department } = CreateDocument.parse({
-        documentId: generateRandomId().toString(),
+        documentId: generateRandomId(),
         name: formData.get('name'),
         category: formData.get('category'),
         conteudo: formData.get('conteudo'),

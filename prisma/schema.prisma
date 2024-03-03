@@ -32,7 +32,7 @@ model Perfil {
 
 model GrupoUtilizadores {
   id         String       @id @db.VarChar(36)
-  nome       String       @unique @db.VarChar(255)
+  nome       String       @db.VarChar(255)
   descricao  String       @db.Text
   utilizador Utilizador[]
   permissoes Permissoes[]
@@ -47,14 +47,14 @@ model Permissoes {
 }
 
 model Documento {
-  id               String   @id @db.VarChar(36)
-  titulo           String   @unique @db.VarChar(255)
-  conteudo         String   @db.Text
-  Categoria        String   @unique @db.VarChar(255)
-  status           String   @default("Pendente")
-  image_url        String   @default("/") @db.VarChar(255)
-  dataCriacao      DateTime @default(now())
-  dataActualizacao DateTime @updatedAt
+  id               String    @id @db.VarChar(36)
+  titulo           String    @db.VarChar(255)
+  conteudo         String    @db.Text
+  Categoria        Categoria
+  status           String    @default("Pendente")
+  image_url        String    @default("/") @db.VarChar(255)
+  dataCriacao      DateTime  @default(now())
+  dataActualizacao DateTime  @updatedAt
 
   Departamento   Departamento? @relation(fields: [departamentoId], references: [id])
   departamentoId String?       @db.VarChar(36)
@@ -91,4 +91,16 @@ enum Genero {
   Masculino
   Feminino
   Outro
+}
+
+enum Categoria {
+  Atas
+  Cartas
+  Decretos
+  Folhetos
+  Fotografias
+  Memorandos
+  Oficios
+  Plantas
+  Relatorios
 }

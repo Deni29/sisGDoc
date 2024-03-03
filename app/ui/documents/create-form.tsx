@@ -19,6 +19,18 @@ export default function Form({
   documents: Documento[],
   departments: Departamento[]
 }) {
+  const categories = [
+    "Atas",
+    "Cartas",
+    "Decretos",
+    "Folhetos",
+    "Fotografias",
+    "Memorandos",
+    "Oficios",
+    "Plantas",
+    "Relatorios"
+  ];
+
   return (
     <form action={createDocument}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -56,9 +68,9 @@ export default function Form({
               <option value="" disabled>
                 Selecione uma categoria
               </option>
-              {documents.map((category) => (
-                <option key={category.id} value={category.Categoria}>
-                  {category.Categoria}
+              {categories.map((category, i) => (
+                <option key={category} value={category.valueOf()}>
+                  {category.valueOf()}
                 </option>
               ))}
             </select>

@@ -29,7 +29,6 @@ CREATE TABLE `GrupoUtilizadores` (
     `nome` VARCHAR(255) NOT NULL,
     `descricao` TEXT NOT NULL,
 
-    UNIQUE INDEX `GrupoUtilizadores_nome_key`(`nome`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -48,7 +47,7 @@ CREATE TABLE `Documento` (
     `id` VARCHAR(36) NOT NULL,
     `titulo` VARCHAR(255) NOT NULL,
     `conteudo` TEXT NOT NULL,
-    `Categoria` VARCHAR(255) NOT NULL,
+    `Categoria` ENUM('Atas', 'Cartas', 'Decretos', 'Folhetos', 'Fotografias', 'Memorandos', 'Oficios', 'Plantas', 'Relatorios') NOT NULL,
     `status` VARCHAR(191) NOT NULL DEFAULT 'Pendente',
     `image_url` VARCHAR(255) NOT NULL DEFAULT '/',
     `dataCriacao` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -56,8 +55,6 @@ CREATE TABLE `Documento` (
     `departamentoId` VARCHAR(36) NULL,
     `utilizadorId` VARCHAR(36) NULL,
 
-    UNIQUE INDEX `Documento_titulo_key`(`titulo`),
-    UNIQUE INDEX `Documento_Categoria_key`(`Categoria`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
