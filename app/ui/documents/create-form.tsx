@@ -57,7 +57,7 @@ export default function Form({
                 Selecione uma categoria
               </option>
               {documents.map((category) => (
-                <option key={category.id} value={category.id}>
+                <option key={category.id} value={category.Categoria}>
                   {category.Categoria}
                 </option>
               ))}
