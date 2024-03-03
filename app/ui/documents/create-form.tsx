@@ -8,12 +8,38 @@ import {
 import { Button } from '../button';
 import { createDocument } from '@/app/lib/actions';
 import DocumentStatus from '@/app/ui/documents/status';
-import { Documento } from '@prisma/client';
+import { Utilizador, Documento, Departamento } from '@prisma/client';
 
-export default function Form({ documents, }: { documents: Documento[], }) {
+export default function Form({
+  users,
+  documents,
+  departments
+}: {
+  users: Utilizador[],
+  documents: Documento[],
+  departments: Departamento[]
+}) {
   return (
     <form action={createDocument}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
+        {/* Document Name */}
+        <div className="mb-4">
+          <label htmlFor="name" className="mb-2 block text-sm font-medium">
+            Titulo/Nome
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Titulo/Nome"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              />
+              <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
 
         {/* Document Category */}
         <div className="mb-4">
@@ -36,7 +62,7 @@ export default function Form({ documents, }: { documents: Documento[], }) {
                 </option>
               ))}
             </select>
-            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+            <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
           </div>
         </div>
 
@@ -55,37 +81,18 @@ export default function Form({ documents, }: { documents: Documento[], }) {
               <option value="" disabled>
                 Selecione um departamento
               </option>
-              {documents.map((department) => (
+              {departments.map((department) => (
                 <option key={department.id} value={department.id}>
-                  {department.departamentoId}
+                  {department.nome}
                 </option>
               ))}
             </select>
-            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-          </div>
-        </div>
-
-        {/* Document Name */}
-        <div className="mb-4">
-          <label htmlFor="name" className="mb-2 block text-sm font-medium">
-            Titulo/Nome
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Titulo/Nome"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              />
-              <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-            </div>
+            <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
           </div>
         </div>
 
         {/* Document Status */}
-        <div>
+        <div className="mb-4">
           <label htmlFor="status" className="mb-2 block text-sm font-medium">
             Definir o status do documento
           </label>
@@ -142,9 +149,52 @@ export default function Form({ documents, }: { documents: Documento[], }) {
             </div>
           </div>
         </div>
+
+        {/* Document Conteúdo */}
+        <div className="mb-4">
+          <label htmlFor="conteudo" className="mb-2 block text-sm font-medium">
+            Carregar documento...
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="conteudo"
+                name="conteudo"
+                type="text"
+                placeholder="..."
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              />
+              <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
+
+        {/* Document User */}
+        <div>
+          <label htmlFor="user" className="mb-2 block text-sm font-medium">
+            Escolha o utilizador
+          </label>
+          <div className="relative">
+            <select
+              id="user"
+              name="user"
+              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Selecione um utilizador
+              </option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.nome}
+                </option>
+              ))}
+            </select>
+            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+          </div>
+        </div>
       </div>
 
-      {/* Document User */}
 
       <div className="mt-6 flex justify-end gap-4">
         <Link

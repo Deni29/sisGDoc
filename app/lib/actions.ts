@@ -9,23 +9,26 @@ import { redirect } from 'next/navigation';
 
 const FormSchema = z.object({
     documentId: z.string(),
-    categoryId: z.string(),
-    departmentId: z.string(),
     name: z.string(),
-    statusId: z.string(),
+    category: z.string(),
+    conteudo: z.string(),
+    status: z.string(),
+    user: z.string(),
+    department: z.string(),
 });
 
 const CreateDocument = FormSchema.omit({})
 
 export async function createDocument(formData: FormData) {
-    const { documentId, categoryId, departmentId, name, statusId } = CreateDocument.parse({
-        documentId: generateRandomId(),
-        categoryId: formData.get('category'),
-        departmentId: formData.get('department'),
+    const { documentId, name, category, conteudo, status, user, department } = CreateDocument.parse({
+        documentId: generateRandomId().toString(),
         name: formData.get('name'),
-        statusId: formData.get('status'),
+        category: formData.get('category'),
+        conteudo: formData.get('conteudo'),
+        status: formData.get('status'),
+        user: formData.get('user'),
+        department: formData.get('department'),
         //imgURL: formData.get('imgURL'),
-        //userId: formData.get('userId'),
     });
 
     await prisma.documento.createMany({
@@ -33,9 +36,11 @@ export async function createDocument(formData: FormData) {
             {
                 id: documentId.toString(),
                 titulo: name,
-                conteudo: '',
-                categoriaId: categoryId,
-                estadoId: statusId,
+                Categoria: category,
+                conteudo: conteudo,
+                status: status,
+                utilizadorId: user,
+                departamentoId: department,
             },
         ],
     });

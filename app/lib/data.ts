@@ -176,7 +176,7 @@ export async function fetchDocuments() {
       }
     });
 
-    console.log(documents);
+    //console.log(documents);
     return documents;
   } catch (err) {
     console.error('Database Error:', err);
@@ -190,7 +190,7 @@ export async function fetchDocumentById(id: string) {
       where: { id: id },
     });
 
-    console.log(document);
+    //console.log(document);
     return document;
 
   } catch (error) {
@@ -204,7 +204,7 @@ export async function fetchUserById(id: string) {
       where: { id: id },
     });
 
-    console.log(user);
+    //console.log(user);
     return user;
 
   } catch (error) {
@@ -218,7 +218,7 @@ export async function fetchProfileByUserId(id: string) {
       where: { utilizadorId: id },
     });
 
-    console.log(userProfile);
+    //console.log(userProfile);
     return userProfile;
 
   } catch (error) {
@@ -234,7 +234,7 @@ export async function fetchUsers() {
       }
     });
 
-    console.log(users);
+    //console.log(users);
     return users;
   } catch (err) {
     console.error('Database Error:', err);
