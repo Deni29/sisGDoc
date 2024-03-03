@@ -1,14 +1,14 @@
 import Form from '@/app/ui/documents/edit-form';
 import Breadcrumbs from '@/app/ui/documents/breadcrumbs';
-import { fetchDocumentById, fetchCategory, fetchDepartment, fetchStatus } from '@/app/lib/data';
+import { fetchDocumentById, fetchDepartment, fetchUsers } from '@/app/lib/data';
+import { Documento, Departamento, Utilizador} from '@prisma/client';
 
 export default async function Page({ params }: { params: { id: string } }) {
     const id = params.id;
-    const [document, categories, departments, estados] = await Promise.all([
+    const [document, departments, users] = await Promise.all([
         fetchDocumentById(id),
-        fetchCategory(),
         fetchDepartment(),
-        fetchStatus(),
+        fetchUsers(), //alterar pelo fetch user id
     ]);
     return (
         <main>
@@ -22,7 +22,10 @@ export default async function Page({ params }: { params: { id: string } }) {
                     },
                 ]}
             />
-            <Form document={document} categories={categories} departments={departments} estados={estados} />
+            <Form 
+                users={users as Utilizador[]}
+                document={document as Documento} 
+                departments={departments as Departamento[]} />
         </main>
     );
 }

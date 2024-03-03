@@ -248,7 +248,8 @@ export async function fetchDepartment() {
     const data = await prisma.departamento.findMany({
       select: {
         id: true,
-        nome: true
+        nome: true,
+        descricao: true,
       }
     });
 

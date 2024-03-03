@@ -10,6 +10,18 @@ import { createDocument } from '@/app/lib/actions';
 import DocumentStatus from '@/app/ui/documents/status';
 import { Utilizador, Departamento } from '@prisma/client';
 
+const categories = [
+  "Atas",
+  "Cartas",
+  "Decretos",
+  "Folhetos",
+  "Fotografias",
+  "Memorandos",
+  "Oficios",
+  "Plantas",
+  "Relatorios"
+];
+
 export default function Form({
   users,
   departments
@@ -17,18 +29,6 @@ export default function Form({
   users: Utilizador[],
   departments: Departamento[]
 }) {
-  const categories = [
-    "Atas",
-    "Cartas",
-    "Decretos",
-    "Folhetos",
-    "Fotografias",
-    "Memorandos",
-    "Oficios",
-    "Plantas",
-    "Relatorios"
-  ];
-
   return (
     <form action={createDocument}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">

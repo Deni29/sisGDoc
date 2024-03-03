@@ -8,24 +8,55 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
-import { Documento, Departamento, Categoria, Estado } from '@prisma/client';
+import { Utilizador, Departamento, Documento } from '@prisma/client';
+import { DocumentIcon } from '@heroicons/react/20/solid';
+import DocumentStatus from './status';
+
+const categories = [
+  "Atas",
+  "Cartas",
+  "Decretos",
+  "Folhetos",
+  "Fotografias",
+  "Memorandos",
+  "Oficios",
+  "Plantas",
+  "Relatorios"
+];
 
 export default function EditInvoiceForm({
+  users,
   document,
-  categories,
   departments,
-  estados,
 }: {
+  users: Utilizador[],
   document: Documento,
-  categories: Categoria[],
   departments: Departamento[],
-  estados: Estado[],
 }) {
   return (
     <form>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Invoice ID */}
         <input key={document.id} type="hidden" name="id" value={document.id} />
+
+        {/* Document Name */}
+        <div className="mb-4">
+          <label htmlFor="name" className="mb-2 block text-sm font-medium">
+            Titulo/Nome
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder={document.titulo}
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              />
+              <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
 
         {/* Document Category */}
         <div className="mb-4">
@@ -37,22 +68,22 @@ export default function EditInvoiceForm({
               id="category"
               name="category"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue={document.categoriaId}
+              defaultValue={document.Categoria}
             >
               <option value="" disabled>
                 Selecione uma categoria
               </option>
               {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.nome}
+                <option key={category} value={category.valueOf()}>
+                  {category.valueOf()}
                 </option>
               ))}
             </select>
-            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+            <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
           </div>
         </div>
 
-        {/* Department Name */}
+        {/* Department */}
         <div className="mb-4">
           <label htmlFor="department" className="mb-2 block text-sm font-medium">
             Escolha o departamento
@@ -62,7 +93,7 @@ export default function EditInvoiceForm({
               id="department"
               name="department"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue={document.}
+              defaultValue={document?.departamentoId}
             >
               <option value="" disabled>
                 Selecione um departamento
@@ -73,53 +104,12 @@ export default function EditInvoiceForm({
                 </option>
               ))}
             </select>
-            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+            <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
           </div>
         </div>
 
+        {/* Document Status */}
         <div className="mb-4">
-          <label htmlFor="category" className="mb-2 block text-sm font-medium">
-            Escolha a categoria
-          </label>
-          <div className="relative">
-            <select
-              id="category"
-              name="category"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=
-            >
-              <option value="" disabled>
-                Selecione uma categoria
-              </option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.nome}
-                </option>
-              ))}
-            </select>
-            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-          </div>
-
-          <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-            Selecione uma categoria
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="amount"
-                name="amount"
-                type="number"
-                defaultValue={document.categoriaId}
-                placeholder="Enter USD amount"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              />
-              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-            </div>
-          </div>
-        </div>
-
-        {/* Invoice Status */}
-        <div>
           <label htmlFor="status" className="mb-2 block text-sm font-medium">
             Definir o status do documento
           </label>
@@ -127,55 +117,99 @@ export default function EditInvoiceForm({
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
-                  id={estado.nome}
+                  id="Pendente"
                   name="status"
                   type="radio"
-                  value={estado.id}
-                  defaultChecked={estado.nome === 'Pendente'}
+                  value="Pendente"
                   className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
                 />
                 <label
-                  htmlFor={estado.nome}
+                  htmlFor="Pendente"
                   className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
                 >
-                  Pendente <ClockIcon className="h-4 w-4" />
+                  <DocumentStatus status="Pendente" />
+                  <span className='hidden'>Pendente</span>
                 </label>
               </div>
 
               <div className="flex items-center">
                 <input
-                  id={estado.nome}
+                  id="Em progresso"
                   name="status"
                   type="radio"
-                  value={estado.id}
-                  defaultChecked={estado.nome === 'Em progresso'}
+                  value="Em progresso"
                   className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
                 />
                 <label
-                  htmlFor={estado.nome}
-                  className="ml-2 flex items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white dark:text-gray-300"
+                  htmlFor="Em progresso"
+                  className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
                 >
-                  Em progresso <CheckIcon className="h-4 w-4" />
+                  <DocumentStatus status="Em progresso" />
+                  <span className='hidden'>Em progresso</span>
                 </label>
               </div>
 
               <div className="flex items-center">
                 <input
-                  id={estado.nome}
+                  id="Concluído"
                   name="status"
                   type="radio"
-                  value={estado.id}
-                  defaultChecked={estado.nome === 'Concluído'}
+                  value="Concluído"
                   className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
                 />
                 <label
-                  htmlFor={estado.nome}
-                  className="ml-2 flex items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white dark:text-gray-300"
+                  htmlFor="Concluído"
+                  className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
                 >
-                  Concluído <CheckIcon className="h-4 w-4" />
+                  <DocumentStatus status="Concluído" />
+                  <span className='hidden'>Concluído</span>
                 </label>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Document Conteúdo */}
+        <div className="mb-4">
+          <label htmlFor="conteudo" className="mb-2 block text-sm font-medium">
+            Carregar documento...
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="conteudo"
+                name="conteudo"
+                type="text"
+                placeholder={document.conteudo}
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              />
+              <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
+
+        {/* Document User */}
+        <div>
+          <label htmlFor="user" className="mb-2 block text-sm font-medium">
+            Escolha o utilizador
+          </label>
+          <div className="relative">
+            <select
+              id="user"
+              name="user"
+              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Selecione um utilizador
+              </option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.nome}
+                </option>
+              ))}
+            </select>
+            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
         </div>
       </div>
@@ -189,6 +223,6 @@ export default function EditInvoiceForm({
         </Link>
         <Button type="submit">Editar Documento</Button>
       </div>
-    </form >
+    </form>
   );
 }
