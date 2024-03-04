@@ -1,6 +1,5 @@
 import {
   PrismaClient,
-  //Categoria
 } from '@prisma/client';
 
 import { formatCurrency, formatDateToLocal } from './utils';
@@ -154,7 +153,7 @@ export async function fetchDocumentsPages(query: string) {
           { titulo: { contains: query } },
           // { dataCriacao: query },
           { status: { contains: query } },
-          //{ Categoria: { contains: query } },
+          { Categoria: { contains: query } },
           { Utilizador: { nome: { contains: query } } },
           { Utilizador: { email: { contains: query } } },
         ],
@@ -188,6 +187,27 @@ export async function fetchDocuments() {
 export async function fetchDocumentById(id: string) {
   try {
     const document = await prisma.documento.findUnique({
+      include: {
+        Utilizador: {
+          select: {
+            id: true,
+            nome: true,
+            Perfil: {
+              select: {
+                id: true,
+                image_url: true
+              }
+            },
+          }
+        },
+        Departamento: {
+          select: {
+            id: true,
+            nome: true,
+            descricao: true,
+          }
+        }
+      },
       where: { id: id },
     });
 
@@ -258,6 +278,20 @@ export async function fetchDepartment() {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all departments.');
+  }
+}
+
+export async function fetchDepartmentById(id: string) {
+  try {
+    const department = await prisma.departamento.findUnique({
+      where: { id: id },
+    });
+
+    //console.log(department);
+    return department;
+
+  } catch (error) {
+    console.error('Database Error:', error);
   }
 }
 

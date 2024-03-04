@@ -47,7 +47,7 @@ CREATE TABLE `Documento` (
     `id` VARCHAR(36) NOT NULL,
     `titulo` VARCHAR(255) NOT NULL,
     `conteudo` TEXT NOT NULL,
-    `Categoria` ENUM('Atas', 'Cartas', 'Decretos', 'Folhetos', 'Fotografias', 'Memorandos', 'Oficios', 'Plantas', 'Relatorios') NOT NULL,
+    `Categoria` VARCHAR(255) NOT NULL,
     `status` VARCHAR(191) NOT NULL DEFAULT 'Pendente',
     `image_url` VARCHAR(255) NOT NULL DEFAULT '/',
     `dataCriacao` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

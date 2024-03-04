@@ -50,7 +50,7 @@ model Documento {
   id               String    @id @db.VarChar(36)
   titulo           String    @db.VarChar(255)
   conteudo         String    @db.Text
-  Categoria        Categoria
+  Categoria        String    @db.VarChar(255)
   status           String    @default("Pendente")
   image_url        String    @default("/") @db.VarChar(255)
   dataCriacao      DateTime  @default(now())
@@ -91,16 +91,4 @@ enum Genero {
   Masculino
   Feminino
   Outro
-}
-
-enum Categoria {
-  Atas
-  Cartas
-  Decretos
-  Folhetos
-  Fotografias
-  Memorandos
-  Oficios
-  Plantas
-  Relatorios
 }

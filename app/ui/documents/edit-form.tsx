@@ -1,16 +1,14 @@
 'use client';
 
 import {
-  CheckIcon,
-  ClockIcon,
-  CurrencyDollarIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
-import { Utilizador, Departamento, Documento } from '@prisma/client';
+import { Departamento, Documento } from '@prisma/client';
 import { DocumentIcon } from '@heroicons/react/20/solid';
 import DocumentStatus from './status';
+import { updateDocument } from '@/app/lib/actions';
 
 const categories = [
   "Atas",
@@ -25,19 +23,20 @@ const categories = [
 ];
 
 export default function EditInvoiceForm({
-  users,
   document,
   departments,
 }: {
-  users: Utilizador[],
   document: Documento,
   departments: Departamento[],
 }) {
+  const updateDocumentWithId = updateDocument.bind(null, document.id);
+
   return (
-    <form>
+    <form action={updateDocumentWithId}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Invoice ID */}
-        <input key={document.id} type="hidden" name="id" value={document.id} />
+        {/* Document ID */}
+        <input type="hidden" name="id" value={document.id} />
+        <input type="hidden" name="userId" value={document?.utilizadorId as string} />
 
         {/* Document Name */}
         <div className="mb-4">
@@ -52,6 +51,7 @@ export default function EditInvoiceForm({
                 type="text"
                 placeholder={document.titulo}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                defaultValue={document.titulo}
               />
               <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
@@ -93,7 +93,7 @@ export default function EditInvoiceForm({
               id="department"
               name="department"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue={document?.departamentoId}
+              defaultValue={document.departamentoId as string}
             >
               <option value="" disabled>
                 Selecione um departamento
@@ -161,7 +161,7 @@ export default function EditInvoiceForm({
                   htmlFor="Concluído"
                   className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
                 >
-                  <DocumentStatus status="Concluído" />
+                  <DocumentStatus status="Concluído"/>
                   <span className='hidden'>Concluído</span>
                 </label>
               </div>
@@ -182,34 +182,10 @@ export default function EditInvoiceForm({
                 type="text"
                 placeholder={document.conteudo}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                defaultValue={document.conteudo}
               />
               <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
-          </div>
-        </div>
-
-        {/* Document User */}
-        <div>
-          <label htmlFor="user" className="mb-2 block text-sm font-medium">
-            Escolha o utilizador
-          </label>
-          <div className="relative">
-            <select
-              id="user"
-              name="user"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
-            >
-              <option value="" disabled>
-                Selecione um utilizador
-              </option>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.nome}
-                </option>
-              ))}
-            </select>
-            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
         </div>
       </div>
