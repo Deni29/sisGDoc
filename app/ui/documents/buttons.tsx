@@ -1,4 +1,4 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, PlusIcon, TrashIcon, DocumentIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 export function CreateDocument() {
@@ -11,6 +11,17 @@ export function CreateDocument() {
       <PlusIcon className="h-5 md:ml-4" />
     </Link>
   );
+}
+
+export function ReadDocument({ id }: { id: string }) {
+  return (
+    <>
+      <button className="rounded-md border p-2 hover:bg-gray-100">
+        <span className="sr-only">Abrir</span>
+        <DocumentIcon className="w-5" />
+      </button>
+    </>
+  )
 }
 
 export function UpdateDocument({ id }: { id: string }) {

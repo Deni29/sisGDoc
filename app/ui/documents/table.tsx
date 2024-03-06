@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { UpdateDocument, DeleteDocument } from '@/app/ui/documents/buttons';
+import { UpdateDocument, DeleteDocument, ReadDocument } from '@/app/ui/documents/buttons';
 import DocumentStatus from '@/app/ui/documents/status';
 import { formatDateToLocal } from '@/app/lib/utils';
 import { fetchFilteredDocuments } from '@/app/lib/data';
@@ -53,7 +53,7 @@ export default async function DocumentsTable({
               </div>
             ))}
           </div>
-          
+
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
@@ -109,6 +109,7 @@ export default async function DocumentsTable({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
+                      <ReadDocument id={document.id as string} />
                       <UpdateDocument id={document.id as string} />
                       <DeleteDocument id={document.id as string} />
                     </div>

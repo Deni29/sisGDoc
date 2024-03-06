@@ -29,7 +29,7 @@ export default function EditInvoiceForm({
   document: Documento,
   departments: Departamento[],
 }) {
-  const updateDocumentWithId = updateDocument.bind(null, document.id);
+  const updateDocumentWithId = () => updateDocument.bind(null, document.id);
 
   return (
     <form action={updateDocumentWithId}>
