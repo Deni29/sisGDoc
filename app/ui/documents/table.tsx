@@ -34,18 +34,19 @@ export default async function DocumentsTable({
                       />
                       <p>{document.nome}</p>
                     </div>
-                    <p className="text-sm text-gray-500">{document.titulo}</p>
+                    <p className="text-sm text-gray-500">
+                      {document.categoria}
+                    </p>
                   </div>
                   <DocumentStatus status={document.estado} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
-                    <p className="text-xl font-medium">
-                      {document.categoria}
-                    </p>
+                    <p className="text-xl font-medium">{document.titulo}</p>
                     <p>{formatDateToLocal(document.dataCriacao.toString())}</p>
                   </div>
                   <div className="flex justify-end gap-2">
+                    <ReadDocument id={document.id as string} />
                     <UpdateDocument id={document.id as string} />
                     <DeleteDocument id={document.id as string} />
                   </div>

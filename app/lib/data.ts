@@ -112,11 +112,11 @@ export async function fetchFilteredDocuments(
       where: {
         OR: [
           { titulo: { contains: query } },
-          // { dataCriacao: query },
           { status: { contains: query } },
-          //{ Categoria: { contains: query } },
+          { Categoria: { contains: query } },
           { Utilizador: { nome: { contains: query } } },
           { Utilizador: { email: { contains: query } } },
+          //{ dataCriacao: { contains: query } },
         ]
       },
       orderBy: { dataCriacao: 'desc' },
