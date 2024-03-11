@@ -211,7 +211,7 @@ export async function fetchDocumentById(id: string) {
       where: { id: id },
     });
 
-    //console.log(document);
+    console.log(document); // Document is empty
     return document;
 
   } catch (error) {

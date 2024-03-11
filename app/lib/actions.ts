@@ -31,20 +31,25 @@ export async function createDocument(formData: FormData) {
         //imgURL: formData.get('imgURL'),
     });
 
-
-    await prisma.documento.createMany({
-        data: [
-            {
-                id: documentId.toString(),
-                titulo: name,
-                Categoria: category,
-                conteudo: conteudo,
-                status: status,
-                utilizadorId: user,
-                departamentoId: department,
-            },
-        ],
-    });
+    try {
+        await prisma.documento.createMany({
+            data: [
+                {
+                    id: documentId.toString(),
+                    titulo: name,
+                    Categoria: category,
+                    conteudo: conteudo,
+                    status: status,
+                    utilizadorId: user,
+                    departamentoId: department,
+                },
+            ],
+        });
+    } catch (error) {
+        return {
+            message: 'Database Error: Failed to Create Document.',
+        };
+    }
 
     revalidatePath('/dashboard/document');
     redirect('/dashboard/document');
@@ -64,25 +69,36 @@ export async function updateDocument(id: string, formData: FormData) {
         //imgURL: formData.get('imgURL'),
     });
 
-    await prisma.documento.update({
-        where: { id: id },
-        data: {
-            titulo: name,
-            Categoria: category,
-            conteudo: conteudo,
-            status: status,
-            utilizadorId: user,
-            departamentoId: department,
-        },
-    });
+    try {
+        await prisma.documento.update({
+            where: { id: id },
+            data: {
+                titulo: name,
+                Categoria: category,
+                conteudo: conteudo,
+                status: status,
+                utilizadorId: user,
+                departamentoId: department,
+            },
+        });
+    } catch (error) {
+        return { message: 'Database Error: Failed to Update Document.' };
+    }
 
     revalidatePath('/dashboard/document');
     redirect('/dashboard/document');
 }
 
 export async function deleteDocument(id: string) {
-    await prisma.documento.delete({
-        where: { id: id },
-    });
-    revalidatePath('/dashboard/document');
+    throw new Error('Failed to Delete Document');
+
+    try {
+        await prisma.documento.delete({
+            where: { id: id },
+        });
+        revalidatePath('/dashboard/document');
+        return { message: 'Deleted Document.' };
+    } catch (error) {
+        return { message: 'Database Error: Failed to Delete Document.' };
+    }
 }
