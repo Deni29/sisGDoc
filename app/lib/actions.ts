@@ -90,8 +90,6 @@ export async function updateDocument(id: string, formData: FormData) {
 }
 
 export async function deleteDocument(id: string) {
-    throw new Error('Failed to Delete Document');
-
     try {
         await prisma.documento.delete({
             where: { id: id },
