@@ -1,5 +1,6 @@
 import {
   PrismaClient,
+  Utilizador,
 } from '@prisma/client';
 
 import { formatCurrency, formatDateToLocal } from './utils';
@@ -330,8 +331,11 @@ export async function fetchFilteredCustomers(query: string) {
 
 export async function getUser(email: string) {
   try {
-    const user = await sql`SELECT * from USERS where email=${email}`;
-    return user.rows[0] as User;
+    const user = await prisma.utilizador.findUnique({
+      where: { email: email },
+    });
+
+    return user as Utilizador;
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
