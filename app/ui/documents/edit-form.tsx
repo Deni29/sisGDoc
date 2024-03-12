@@ -1,14 +1,17 @@
 'use client';
 
 import {
-  UserCircleIcon,
+  DocumentTextIcon,
+  ListBulletIcon,
+  ArchiveBoxIcon,
+  FolderIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 import { Departamento, Documento } from '@prisma/client';
-import { DocumentIcon } from '@heroicons/react/20/solid';
 import DocumentStatus from './status';
 import { updateDocument } from '@/app/lib/actions';
+import { useFormState } from 'react-hook-form';
 
 const categories = [
   "Atas",
@@ -29,10 +32,12 @@ export default function EditInvoiceForm({
   document: Documento,
   departments: Departamento[],
 }) {
+  const initialState = { message: null, errors: {} };
   const updateDocumentWithId = updateDocument.bind(null, document.id);
+  const [state, dispatch] = useFormState(updateDocumentWithId, initialState);
 
   return (
-    <form action={updateDocumentWithId}>
+    <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Document ID */}
         <input type="hidden" name="id" value={document.id} />
@@ -52,9 +57,18 @@ export default function EditInvoiceForm({
                 placeholder={document.titulo}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 defaultValue={document.titulo}
+                aria-describedby="name-error"
               />
-              <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+              <DocumentTextIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
+          </div>
+          <div id="name-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.name &&
+              state.errors.name.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
           </div>
         </div>
 
@@ -69,6 +83,7 @@ export default function EditInvoiceForm({
               name="category"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               defaultValue={document.Categoria}
+              aria-describedby="category-error"
             >
               <option value="" disabled>
                 Selecione uma categoria
@@ -79,7 +94,15 @@ export default function EditInvoiceForm({
                 </option>
               ))}
             </select>
-            <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            <ListBulletIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+          </div>
+          <div id="category-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.category &&
+              state.errors.category.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
           </div>
         </div>
 
@@ -94,6 +117,7 @@ export default function EditInvoiceForm({
               name="department"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               defaultValue={document.departamentoId as string}
+              aria-describedby="department-error"
             >
               <option value="" disabled>
                 Selecione um departamento
@@ -104,7 +128,15 @@ export default function EditInvoiceForm({
                 </option>
               ))}
             </select>
-            <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            <ArchiveBoxIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+          </div>
+          <div id="department-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.department &&
+              state.errors.department.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
           </div>
         </div>
 
@@ -123,6 +155,7 @@ export default function EditInvoiceForm({
                   value="Pendente"
                   defaultChecked={document.status === 'Pendente'}
                   className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+                  aria-describedby="status-error"
                 />
                 <label
                   htmlFor="Pendente"
@@ -141,6 +174,7 @@ export default function EditInvoiceForm({
                   value="Em progresso"
                   defaultChecked={document.status === 'Em progresso'}
                   className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+                  aria-describedby="status-error"
                 />
                 <label
                   htmlFor="Em progresso"
@@ -159,16 +193,25 @@ export default function EditInvoiceForm({
                   value="Concluído"
                   defaultChecked={document.status === 'Concluído'}
                   className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+                  aria-describedby="status-error"
                 />
                 <label
                   htmlFor="Concluído"
                   className="ml-2 flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300"
                 >
-                  <DocumentStatus status="Concluído"/>
+                  <DocumentStatus status="Concluído" />
                   <span className='hidden'>Concluído</span>
                 </label>
               </div>
             </div>
+          </div>
+          <div id="status-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.status &&
+              state.errors.status.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
           </div>
         </div>
 
@@ -186,10 +229,19 @@ export default function EditInvoiceForm({
                 placeholder={document.conteudo}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 defaultValue={document.conteudo}
+                aria-describedby="content-error"
               />
-              <DocumentIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+              <FolderIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
+        </div>
+        <div id="content-error" aria-live="polite" aria-atomic="true">
+          {state.errors?.conteudo &&
+            state.errors.conteudo.map((error: string) => (
+              <p className="mt-2 text-sm text-red-500" key={error}>
+                {error}
+              </p>
+            ))}
         </div>
       </div>
 
