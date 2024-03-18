@@ -12,7 +12,7 @@ import { Button } from '../button';
 import { createDocument } from '@/app/lib/actions';
 import DocumentStatus from '@/app/ui/documents/status';
 import { Utilizador, Departamento } from '@prisma/client';
-import { useFormState } from 'react-dom'
+import { useFormState } from 'react-dom';
 
 const categories = [
   "Atas",
