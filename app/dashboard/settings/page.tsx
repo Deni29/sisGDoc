@@ -1,3 +1,7 @@
 export default function Page() {
-    return <p>Settings Page</p>
+    return (
+        <div>
+            <p>Settings Page</p>
+        </div>
+    );
 }
